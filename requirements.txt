@@ -1,2 +1,6 @@
 pandas
 matplotlib
+flask
+flask_sqlalchemy
+flask_oauthlib
+google-api-python-client
