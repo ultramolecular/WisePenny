@@ -1,6 +1,7 @@
-pandas
-matplotlib
 flask
-flask_sqlalchemy
-flask_oauthlib
-google-api-python-client
+flask-sqlalchemy
+flask-oauthlib
+flask-cors
+flask-session
+firebase-admin
+python-dotenv

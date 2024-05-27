@@ -1,110 +1,88 @@
 # WisePenny
 
-A minimalistic CLI application to log and analyze your expenses based on the 50/30/20 rule.
+A minimalistic web application to log and analyze your expenses.
 
 ## Features
 
 - Log expenses with date, description, amount, method, category, and type.
 - View all logged expenses.
-- Analyze expenses and generate a pie chart showing the distribution of expenses according to the 50/30/20 rule.
 - Separate tracking of cash and checking account balances.
 - Add funds to either cash or checking account balances.
 - View detailed balance breakdown between cash and checking accounts.
 - Remove and edit logged expenses.
 
-## Setup
+## Development Setup
 
 1. Clone the repository:
+
     ```sh
     git clone git@github.com:user/WisePenny.git
     cd WisePenny
     ```
 
-2. Install the dependencies:
+2. Create virtual environment:
+
+    ```sh
+    python -m venv wpenv
+    source ./wpenv/bin/activate
+    ```
+
+3. Install requirements:
+
     ```sh
     pip install -r requirements.txt
     ```
 
-3. Run the application:
+4. Run Flask backend application:
+
     ```sh
-    python main.py
+    export FLASK_APP='./backend/main.py'
+    export FLASK_ENV='dev'
+    flask run
     ```
+
+5. Install npm modules and run development server:
+
+    ```sh
+    cd frontend
+    npm install
+    npm run start
+    ```
+
+6. Open up `http://localhost:3000` on a browser to see local changes as you develop.
 
 ## Usage
 
 ### Adding Funds
 
-- Add $50 to the cash balance:
-    ```sh
-    python main.py add_funds 50 cash
-    ```
-
-- Add $100 to the checking account balance:
-    ```sh
-    python main.py add_funds 100 checking
-    ```
-
 ### Viewing Balance
-
-- View the current balance and its breakdown:
-    ```sh
-    python main.py view_bal
-    ```
 
 ### Adding an Expense
 
-- Add an expense of $25 for groceries paid with cash on 2023-05-19:
-    ```sh
-    python main.py add 2023-05-19 "Groceries" 25 cash groceries Need
-    ```
-
-- Add an expense of $50 for rent paid with checking on 2023-05-20:
-    ```sh
-    python main.py add 2023-05-20 "Rent" 50 checking rent Need
-    ```
 
 ### Removing an Expense
 
-- Remove an expense with ID 1:
-    ```sh
-    python main.py remove 1
-    ```
+TODO: fill description
 
 ### Editing an Expense
 
-- Edit the description of the expense with ID 2 to "New Groceries":
-    ```sh
-    python main.py edit 2 --descr "New Groceries"
-    ```
-
-- Edit the amount of the expense with ID 3 to $30:
-    ```sh
-    python main.py edit 3 --amount 30
-    ```
+TODO: fill description
 
 ### Viewing All Expenses
 
-- View all logged expenses:
-    ```sh
-    python main.py view
-    ```
+TODO: fill description
 
 ### Analyzing Expenses
 
-- Analyze the expenses:
-    ```sh
-    python main.py analyze
-    ```
+TODO: fill description
 
 ## Current Development To-Do List
+
+TODO: fill description
 
 ### Future Development
 
 1. **Web Application Development**
-    - Transition from a CLI application to a web application.
-    - Implement user authentication to allow users to log in with their credentials.
-    - Store logged expenses securely in the cloud.
-    - Develop a web-based interface for logging expenses.
     - Enable users to view and analyze their expenses from any device.
 
 2. **Feature Enhancements**
@@ -119,4 +97,3 @@ A minimalistic CLI application to log and analyze your expenses based on the 50/
 
 4. **Improved Analytics**
     - Enhance the analysis features to provide more detailed insights.
-
