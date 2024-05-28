@@ -33,7 +33,9 @@ A minimalistic web application to log and analyze your expenses.
     pip install -r requirements.txt
     ```
 
-4. Run Flask backend application:
+4. Set up your own Firebase project and create `.env` file for required environment variables.
+
+5. Run Flask backend application:
 
     ```sh
     export FLASK_APP='./backend/main.py'
@@ -41,7 +43,7 @@ A minimalistic web application to log and analyze your expenses.
     flask run
     ```
 
-5. Install npm modules and run development server:
+6. Install npm modules and run development server:
 
     ```sh
     cd frontend
@@ -49,16 +51,21 @@ A minimalistic web application to log and analyze your expenses.
     npm run start
     ```
 
-6. Open up `http://localhost:3000` on a browser to see local changes as you develop.
+7. Open up `http://localhost:3000` on a browser to see local changes as you develop.
 
 ## Usage
 
 ### Adding Funds
 
+TODO: fill description
+
 ### Viewing Balance
+
+TODO: fill description
 
 ### Adding an Expense
 
+TODO: fill description
 
 ### Removing an Expense
 
@@ -77,8 +84,6 @@ TODO: fill description
 TODO: fill description
 
 ## Current Development To-Do List
-
-TODO: fill description
 
 ### Future Development
 
