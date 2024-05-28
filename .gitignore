@@ -8,7 +8,7 @@ __pycache__/
 flask_session/
 
 # dependencies
-/node_modules
+node_modules/
 /.pnp
 .pnp.js
 
