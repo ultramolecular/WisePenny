@@ -128,16 +128,6 @@ def view_balance():
 
 @app.route('/remove_expense/<string:exp_id>', methods = ['POST'])
 def remove_expense(exp_id):
-    # if 'user_id' not in session:
-    #     return jsonify({"message": "Not authenticated"}), 401
-
-    # user_id = session['user_id']
-    # user_ref = db.collection('users').document(user_id)
-    # expense_ref = user_ref.collection('expenses').document(exp_id)
-
-    # expense_ref.delete()
-    
-    # return jsonify({"message": f"Expense with ID {exp_id} removed successfully"}), 200
     if 'user_id' not in session:
         return jsonify({"message": "Not authenticated"}), 401
 
@@ -145,15 +135,9 @@ def remove_expense(exp_id):
     user_ref = db.collection('users').document(user_id)
     expense_ref = user_ref.collection('expenses').document(exp_id)
 
-    print(f"Attempting to delete expense with ID: {exp_id} for user: {user_id}")
-
-    try:
-        expense_ref.delete()
-        print(f"Successfully deleted expense with ID: {exp_id}")
-        return jsonify({"message": f"Expense with ID {exp_id} removed successfully"}), 200
-    except Exception as e:
-        print(f"An error occurred: {str(e)}")
-        return jsonify({"message": "An error occurred while deleting the expense", "error": str(e)}), 500
+    expense_ref.delete()
+    
+    return jsonify({"message": f"Expense with ID {exp_id} removed successfully"}), 200
 
 @app.route('/edit_expense/<string:exp_id>', methods = ['POST'])
 def edit_expense(exp_id):
@@ -164,21 +148,27 @@ def edit_expense(exp_id):
     user_ref = db.collection('users').document(user_id)
     expense_ref = user_ref.collection('expenses').document(exp_id)
 
-    update_data = {key: request.form[key] for key in request.form if request.form[key]}
+    update_data = {key: request.json[key] for key in request.json if request.json[key]}
+
+    if not update_data:
+        return jsonify({"message": "No data provided to update."}), 400
 
     expense_ref.update(update_data)
 
-    return jsonify({"message": f"Expense with ID {exp_id} edited successfully!"})
+    return jsonify({"message": f"Expense with ID {exp_id} edited successfully!"}), 200
 
 @app.route('/view_expenses')
 def view_expenses():
-    # TODO: return document ids in the response?
     if 'user_id' not in session:
         return jsonify({"message": "Not authenticated"}), 401
 
     user_id = session['user_id']
     expenses_ref = db.collection('users').document(user_id).collection('expenses')
-    expenses = [doc.to_dict() for doc in expenses_ref.stream()]
+    expenses = []
+    for doc in expenses_ref.stream():
+        exp = doc.to_dict()
+        exp['id'] = doc.id
+        expenses.append(exp)
 
     return jsonify(expenses), 200
 
