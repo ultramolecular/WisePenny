@@ -111,8 +111,8 @@ def add_expense():
 
     return jsonify({"message": "Expense added successfully"}), 200
 
-@app.route('/view_balance', methods = ['GET'])
-def view_balance():
+@app.route('/get_balance', methods = ['GET'])
+def get_balance():
     if 'user_id' not in session:
         return jsonify({"message": "Not authenticated"}), 401
 
@@ -157,13 +157,13 @@ def edit_expense(exp_id):
 
     return jsonify({"message": f"Expense with ID {exp_id} edited successfully!"}), 200
 
-@app.route('/view_expenses')
-def view_expenses():
+@app.route('/get_expenses')
+def get_expenses():
     if 'user_id' not in session:
         return jsonify({"message": "Not authenticated"}), 401
 
     user_id = session['user_id']
-    expenses_ref = db.collection('users').document(user_id).collection('expenses')
+    expenses_ref = db.collection('users').document(user_id).collection('expenses').order_by('date', direction=firestore.Query.DESCENDING)
     expenses = []
     for doc in expenses_ref.stream():
         exp = doc.to_dict()
