@@ -14,7 +14,7 @@ function Dashboard() {
   }, []);
 
   const fetchExpenses = () => {
-    axios.get(`${config.apiUrl}/view_expenses`, { withCredentials: true })
+    axios.get(`${config.apiUrl}/get_expenses`, { withCredentials: true })
     .then(response => {
       setExpenses(response.data);
     })

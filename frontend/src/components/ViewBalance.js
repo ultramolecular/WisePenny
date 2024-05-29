@@ -10,7 +10,7 @@ function ViewBalance() {
   });
 
   useEffect(() => {
-    axios.get(`${config.apiUrl}/view_balance`, { withCredentials: true })
+    axios.get(`${config.apiUrl}/get_balance`, { withCredentials: true })
       .then(response => {
         setBalance(response.data);
       })
