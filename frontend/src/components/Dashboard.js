@@ -16,7 +16,6 @@ function Dashboard() {
   const fetchExpenses = () => {
     axios.get(`${config.apiUrl}/view_expenses`, { withCredentials: true })
     .then(response => {
-      console.log(response.data);
       setExpenses(response.data);
     })
     .catch(error => {
@@ -127,7 +126,7 @@ function Dashboard() {
       </form>
     )}
 
-    <AddExpense />
+    <AddExpense fetchExpenses={fetchExpenses}/>
     <AddFunds />
     <ViewBalance />
     </div>
