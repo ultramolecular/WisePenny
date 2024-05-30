@@ -1,23 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import config from '../config';
+import React from 'react';
 import axios from 'axios';
+import config from '../config';
 
-function ViewBalance() {
-  const [balance, setBalance] = useState({
-    cash_balance: 0,
-    checking_balance: 0,
-    total_balance: 0
-  });
-
-  useEffect(() => {
-    axios.get(`${config.apiUrl}/get_balance`, { withCredentials: true })
-      .then(response => {
-        setBalance(response.data);
-      })
-      .catch(error => {
-        console.error("There was an error fetching the balance!", error);
-      });
-  }, []);
+function ViewBalance({ balance, fetchBalance }) {
+  const handleClearBalance = () => {
+    axios.post(`${config.apiUrl}/clear_balance`, {}, { withCredentials: true })
+    .then(response => {
+      fetchBalance();
+    })
+    .catch(error => {
+      console.error("There was an error clearing the balance!", error);
+    })
+  }
 
   return (
     <div>
@@ -25,6 +19,7 @@ function ViewBalance() {
       <p>Cash Balance: ${balance.cash_balance}</p>
       <p>Checking Balance: ${balance.checking_balance}</p>
       <p>Total Balance: ${balance.total_balance}</p>
+      <button onClick={handleClearBalance}>Clear Balance</button>
     </div>
   );
 }

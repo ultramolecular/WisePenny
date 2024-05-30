@@ -3,7 +3,7 @@ import axios from 'axios';
 import config from '../config';
 import { useNavigate} from 'react-router-dom';
 
-function AddFunds() {
+function AddFunds({ fetchBalance }) {
   const nav = useNavigate();
   const [formData, setFormData] = useState({
     amount: '',
@@ -23,6 +23,7 @@ function AddFunds() {
     axios.post(`${config.apiUrl}/add_funds`, formData, { withCredentials: true })
     .then(response => {
       setSuccessMsg(`$${formData.amount} added successfully!`);
+      fetchBalance();
       nav('/dashboard');
     })
     .catch(error => {
