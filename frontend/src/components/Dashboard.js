@@ -7,10 +7,16 @@ import ViewBalance from './ViewBalance';
 
 function Dashboard() {
   const [expenses, setExpenses] = useState([]);
+  const [balance, setBalance] = useState({
+    cash_balance: 0,
+    checking_balance: 0,
+    total_balance: 0
+  });
   const [editingExpense, setEditingExpense] = useState(null);
 
   useEffect(() => {
     fetchExpenses();
+    fetchBalance();
   }, []);
 
   const fetchExpenses = () => {
@@ -21,6 +27,16 @@ function Dashboard() {
     .catch(error => {
       console.error("There was an error fetching the expenses!", error);
     });
+  };
+
+  const fetchBalance = () => {
+    axios.get(`${config.apiUrl}/get_balance`, { withCredentials: true })
+    .then(response => {
+      setBalance(response.data);
+    })
+    .catch(error => {
+      console.error("There was an error fetching the balance!", error);
+    })
   };
 
   const handleEditChange = (e) => {
@@ -35,6 +51,7 @@ function Dashboard() {
     axios.post(`${config.apiUrl}/edit_expense/${editingExpense.id}`, editingExpense, { withCredentials: true })
     .then(response => {
       fetchExpenses();
+      fetchBalance();
       setEditingExpense(null);
     })
     .catch(error => {
@@ -46,6 +63,7 @@ function Dashboard() {
     axios.post(`${config.apiUrl}/remove_expense/${id}`, {}, { withCredentials: true })
     .then(response => {
       fetchExpenses();
+      fetchBalance();
     })
     .catch(error => {
       console.error("There was an error deleting the expense!", error);
@@ -126,9 +144,9 @@ function Dashboard() {
       </form>
     )}
 
-    <AddExpense fetchExpenses={fetchExpenses}/>
-    <AddFunds />
-    <ViewBalance />
+    <AddExpense fetchExpenses={fetchExpenses} fetchBalance={fetchBalance}/>
+    <AddFunds fetchBalance={fetchBalance}/>
+    <ViewBalance balance={balance} fetchBalance={fetchBalance}/>
     </div>
   );
 }

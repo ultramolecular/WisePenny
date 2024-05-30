@@ -126,6 +126,20 @@ def get_balance():
         "total_balance": user_data.get('cash_balance', 0) + user_data.get('checking_balance', 0)
     }), 200
 
+@app.route('/clear_balance', methods=['POST'])
+def clear_balance():
+    if 'user_id' not in session:
+        return jsonify({"message": "Not authenticated"}), 401
+    
+    user_id = session['user_id']
+    user_ref = db.collection('users').document(user_id)
+    user_ref.update({
+        'cash_balance': 0,
+        'checking_balance': 0
+    })
+
+    return jsonify({"message": "Balance cleared successfully!"}), 200
+
 @app.route('/remove_expense/<string:exp_id>', methods = ['POST'])
 def remove_expense(exp_id):
     if 'user_id' not in session:
@@ -134,6 +148,15 @@ def remove_expense(exp_id):
     user_id = session['user_id']
     user_ref = db.collection('users').document(user_id)
     expense_ref = user_ref.collection('expenses').document(exp_id)
+    expense_data = expense_ref.get().to_dict()
+    amount = float(expense_data['amount'])
+
+    if expense_data['method'].lower() == 'cash':
+        new_bal = user_ref.get().to_dict().get('cash_balance', 0) + amount
+        user_ref.update({'cash_balance': new_bal})
+    else:
+        new_bal = user_ref.get().to_dict().get('checking_balance', 0) + amount
+        user_ref.update({'checking_balance': new_bal})
 
     expense_ref.delete()
     
@@ -147,11 +170,23 @@ def edit_expense(exp_id):
     user_id = session['user_id']
     user_ref = db.collection('users').document(user_id)
     expense_ref = user_ref.collection('expenses').document(exp_id)
+    expense_data = expense_ref.get().to_dict()
 
     update_data = {key: request.json[key] for key in request.json if request.json[key]}
 
     if not update_data:
         return jsonify({"message": "No data provided to update."}), 400
+
+    # Update balance correctly
+    prev_amount = float(expense_data['amount'])
+    new_amount = float(update_data.get('amount', prev_amount))
+
+    if expense_data['method'].lower() == 'cash':
+        new_bal = user_ref.get().to_dict().get('cash_balance', 0) + prev_amount - new_amount
+        user_ref.update({'cash_balance': new_bal})
+    else:
+        new_bal = user_ref.get().to_dict().get('checking_balance', 0) + prev_amount - new_amount
+        user_ref.update({'checking_balance': new_bal})
 
     expense_ref.update(update_data)
 

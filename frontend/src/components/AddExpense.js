@@ -3,7 +3,7 @@ import axios from 'axios';
 import config from '../config';
 import { useNavigate } from 'react-router-dom';
 
-function AddExpense({ fetchExpenses }) {
+function AddExpense({ fetchExpenses, fetchBalance }) {
   const nav = useNavigate();
   const [formData, setFormData] = useState({
     date: '',
@@ -27,6 +27,7 @@ function AddExpense({ fetchExpenses }) {
     .then(response => {
       setSuccessMsg('Expense logged!');
       fetchExpenses();
+      fetchBalance();
       nav('/dashboard');
     })
     .catch(error => {
