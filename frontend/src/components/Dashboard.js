@@ -86,6 +86,10 @@ function Dashboard({ checkAuthStatus }) {
     setEditingExpense(expense);
   };
 
+  const formatAmount = (amount) => {
+    return parseFloat(amount).toFixed(2);
+  };
+
   return (
     <div>
       <h1>WisePenny</h1>
@@ -110,7 +114,7 @@ function Dashboard({ checkAuthStatus }) {
               <tr key={expense.id}>
                 <td>{expense.date}</td>
                 <td>{expense.descr}</td>
-                <td>{expense.amount}</td>
+                <td>${formatAmount(expense.amount)}</td>
                 <td>{expense.method}</td>
                 <td>{expense.category}</td>
                 <td>{expense.type}</td>
