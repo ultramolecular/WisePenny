@@ -4,7 +4,7 @@ import { auth, provider, signInWithPopup } from '../firebaseConfig';
 import config from '../config'
 import axios from 'axios';
 
-function Login() {
+function Login({ checkAuthStatus }) {
   const nav = useNavigate();
 
   const googleLogin = async () => {
@@ -12,6 +12,7 @@ function Login() {
       const result = await signInWithPopup(auth, provider);
       const idToken = await result.user.getIdToken();
       await axios.post(`${config.apiUrl}/login`, { idToken }, { withCredentials: true });
+      await checkAuthStatus();
       nav('/dashboard');
     } catch (error) {
       console.error("Error logging in with Google!", error);
