@@ -4,8 +4,9 @@ import axios from 'axios';
 import AddExpense from './AddExpense';
 import AddFunds from './AddFunds';
 import ViewBalance from './ViewBalance';
+import { useNavigate } from 'react-router-dom';
 
-function Dashboard() {
+function Dashboard({ checkAuthStatus }) {
   const [expenses, setExpenses] = useState([]);
   const [balance, setBalance] = useState({
     cash_balance: 0,
@@ -13,6 +14,7 @@ function Dashboard() {
     total_balance: 0
   });
   const [editingExpense, setEditingExpense] = useState(null);
+  const nav = useNavigate();
 
   useEffect(() => {
     fetchExpenses();
@@ -37,6 +39,16 @@ function Dashboard() {
     .catch(error => {
       console.error("There was an error fetching the balance!", error);
     })
+  };
+
+  const handleLogout = async () => {
+    try {
+      await axios.post(`${config.apiUrl}/logout`, {}, { withCredentials: true });
+      await checkAuthStatus();
+      nav('/login');
+    } catch (error) {
+      console.error("There was an error logging out!", error);
+    }
   };
 
   const handleEditChange = (e) => {
@@ -77,7 +89,7 @@ function Dashboard() {
   return (
     <div>
       <h1>WisePenny</h1>
-
+      <button onClick={handleLogout}>Logout</button>
       {expenses.length === 0 ? (
         <p>You have no expenses logged yet, start adding expenses to see them here!</p>
       ) : (

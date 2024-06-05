@@ -2,7 +2,7 @@ import os
 from datetime import timedelta
 from dotenv import load_dotenv
 from pathlib import Path
-from flask import Flask, request, jsonify, session, send_from_directory
+from flask import Flask, request, jsonify, session, send_from_directory, redirect, url_for
 from flask_cors import CORS
 from flask_session import Session
 import firebase_admin
@@ -31,8 +31,19 @@ db = firestore.client()
 
 @app.route('/')
 def serve():
+    if 'user_id' not in session:
+        return redirect(url_for('login_page'))
     return send_from_directory(app.static_folder, 'index.html')
 
+@app.route('/login_page')
+def login_page():
+    return send_from_directory(app.static_folder, 'index.html')
+
+@app.route('/check_auth', methods=['GET'])
+def check_auth():
+    if 'user_id' in session:
+        return jsonify({"authenticated": True}), 200
+    return jsonify({"authenticated": False}), 401
 
 @app.route('/login', methods = ['POST'])
 def login():
