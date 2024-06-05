@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import config from '../config';
 import { useNavigate } from 'react-router-dom';
 
 function AddExpense({ fetchExpenses, fetchBalance }) {
   const nav = useNavigate();
+  const getCurrDate = () => {
+    const date = new Date();
+    return date.toISOString().split('T')[0];
+  };
   const [formData, setFormData] = useState({
     date: '',
     descr: '',
@@ -15,6 +19,13 @@ function AddExpense({ fetchExpenses, fetchBalance }) {
   });
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+
+  useEffect(() => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      date: getCurrDate()
+    }));
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -28,6 +39,14 @@ function AddExpense({ fetchExpenses, fetchBalance }) {
       setSuccessMsg('Expense logged!');
       fetchExpenses();
       fetchBalance();
+      setFormData({
+        date: getCurrDate(),
+        descr: '',
+        amount: '',
+        method: '',
+        category: '',
+        type: ''
+      })
       nav('/dashboard');
     })
     .catch(error => {
