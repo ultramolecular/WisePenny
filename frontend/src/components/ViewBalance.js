@@ -13,12 +13,16 @@ function ViewBalance({ balance, fetchBalance }) {
     })
   }
 
+  const formatAmount = (amount) => {
+    return parseFloat(amount).toFixed(2);
+  }
+
   return (
     <div>
       <h1>Your Balance</h1>
-      <p>Cash Balance: ${balance.cash_balance}</p>
-      <p>Checking Balance: ${balance.checking_balance}</p>
-      <p>Total Balance: ${balance.total_balance}</p>
+      <p>Cash Balance: ${formatAmount(balance.cash_balance)}</p>
+      <p>Checking Balance: ${formatAmount(balance.checking_balance)}</p>
+      <p>Total Balance: ${formatAmount(balance.total_balance)}</p>
       <button onClick={handleClearBalance}>Clear Balance</button>
     </div>
   );
