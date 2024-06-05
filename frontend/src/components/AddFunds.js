@@ -24,6 +24,10 @@ function AddFunds({ fetchBalance }) {
     .then(response => {
       setSuccessMsg(`$${formData.amount} added successfully!`);
       fetchBalance();
+      setFormData({
+        amount: '',
+        method: ''
+      });
       nav('/dashboard');
     })
     .catch(error => {
