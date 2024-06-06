@@ -12,10 +12,23 @@ jobs:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - run: npm ci && npm run build
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Build frontend
+        working-directory: ./frontend
+        run: |
+          npm ci
+          npm run build
+      - name: Deploy to Firebase hosting preview
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_WISEPENNY_B00CA }}
           projectId: wisepenny-b00ca
+        env:
+          FIREBASE_CLI_PREVIEWS: hostingchannels
+      - name: Deploy backend functions
+        working-directory: ./functions
+        run: |
+          npm ci
+          firebase deploy --only functions
