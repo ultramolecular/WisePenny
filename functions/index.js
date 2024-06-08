@@ -1,5 +1,5 @@
-const { onRequest } = require("firebase-functions/v2/https");
-const { exec } = require("child_process");
+const {onRequest} = require("firebase-functions/v2/https");
+const {exec} = require("child_process");
 const path = require("path");
 
 exports.app = onRequest((req, res) => {
