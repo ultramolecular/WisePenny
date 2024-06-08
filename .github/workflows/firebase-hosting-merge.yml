@@ -23,6 +23,7 @@ jobs:
           echo $FIREBASE_SERVICE_ACCOUNT > ${HOME}/wisepenny_fb.json
           gcloud auth activate-service-account --key-file=${HOME}/wisepenny_fb.json
           gcloud config set project wisepenny-b00ca
+          firebase login
           firebase use --add wisepenny-b00ca
       - name: Deploy to Firebase hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
