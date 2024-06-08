@@ -14,7 +14,7 @@ env_path = Path('.') / 'env'
 load_dotenv(dotenv_path = env_path)
 
 app = Flask(__name__, static_folder = '../frontend/build', static_url_path = '/')
-CORS(app, supports_credentials = True)
+CORS(app, supports_credentials = True, resources={r"/*": {"origins": "*"}})
 
 app.secret_key = os.getenv('REACT_APP_SECRET_KEY')
 
