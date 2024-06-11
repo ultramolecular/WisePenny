@@ -26,6 +26,9 @@ jobs:
       - name: Authenticate Docker with Google Cloud
         run: gcloud auth configure-docker
 
+      - name: Create Firebase JSON key
+        run: echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_WISEPENNY_B00CA }}" > wisepenny_fb.json
+
       - name: Build Docker image
         run: sudo docker build -t gcr.io/wisepenny-b00ca/wisepenny-backend .
 
