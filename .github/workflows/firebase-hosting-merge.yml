@@ -27,7 +27,7 @@ jobs:
         run: gcloud auth configure-docker
 
       - name: Build Docker image
-        run: sudo docker build -t gcr.io/wisepenny-b00ca/wisepenny-backend ./backend
+        run: sudo docker build -t gcr.io/wisepenny-b00ca/wisepenny-backend .
 
       - name: Push Docker image
         run: sudo docker push gcr.io/wisepenny-b00ca/wisepenny-backend
