@@ -17,28 +17,40 @@ jobs:
         uses: 'google-github-actions/auth@v2'
         with:
           credentials_json: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_WISEPENNY_B00CA }}'
-
+      
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
         with:
-          project_id: wisepenny-b00ca
+          project_id: wisepennny-b00ca
 
-      - name: Authenticate Docker with Google Cloud
-        run: sudo gcloud auth configure-docker
+      - name: Login to Google Container Registry
+        uses: docker/login-action@v3
+        with:
+          username: _json_key
+          password: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_WISEPENNY_B00CA }}
+          registry: gcr.io
 
-      - name: Create Firebase JSON key
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Create service account file
         run: echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_WISEPENNY_B00CA }}" > wisepenny_fb.json
 
-      - name: Build Docker image
-        run: sudo docker build -t gcr.io/wisepenny-b00ca/wisepenny-backend .
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: gcr.io/wisepenny-b00ca/wisepenny-backend:latest
 
-      - name: Push Docker image
-        run: sudo docker push gcr.io/wisepenny-b00ca/wisepenny-backend
 
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy wisepenny-backend-service \
-            --image gcr.io/wisepenny-b00ca/wisepenny-backend \
+            --image gcr.io/wisepenny-b00ca/wisepenny-backend:latest \
             --platform managed \
             --region us-central1 \
             --allow-unauthenticated
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: $HOME/wisepenny_fb.json
