@@ -25,7 +25,7 @@ app.config['SESSION_COOKIE_SECURE'] = True
 Session(app)
 
 # Firebase setup
-cred_path = os.getenv('REACT_APP_FIREBASE_CREDENTIALS_PATH', '../wisepenny_fb.json')
+cred_path = os.getenv('REACT_APP_FIREBASE_CREDENTIALS_PATH', '/app/wisepenny_fb.json')
 cred = credentials.Certificate(cred_path)
 firebase_admin.initialize_app(cred)
 db = firestore.client()
@@ -234,4 +234,4 @@ def analyze_expenses():
 
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run(debug = True, host='0.0.0.0', port=8080)
