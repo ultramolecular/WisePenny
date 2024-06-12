@@ -24,6 +24,11 @@ jobs:
         with:
           project_id: wisepenny-b00ca
 
+      - name: Activate service account
+        run: gcloud auth activate-service-account --key-file=$HOME/wisepenny_fb.json
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: wisepenny_fb.json
+
       - name: Configure gcloud to use service account
         run: gcloud config set account firebase-adminsdk-4zxvl@wisepenny-b00ca.iam.gserviceaccount.com
 
@@ -35,6 +40,9 @@ jobs:
 
       - name: Verify Docker auth configuration
         run: cat ~/.docker/config.json
+
+      - name: Authenticate Docker with Google Cloud using JSON Key
+        run: cat wisepenny_fn.json | docker login -u _json_key --password-stdin https://gcr.io
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
