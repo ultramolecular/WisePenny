@@ -53,4 +53,4 @@ jobs:
             --platform managed \
             --region us-central1 \
             --allow-unauthenticated \
-            --set-env-vars GOOGLE_APPLICATION_CREDENTIALS=/app/wisepenny_fb.json
+            --set-env-vars GOOGLE_APPLICATION_CREDENTIALS=wisepenny_fb.json
