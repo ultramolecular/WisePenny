@@ -25,7 +25,7 @@ app.config['SESSION_COOKIE_SECURE'] = True
 Session(app)
 
 # Firebase setup
-cred_path = os.getenv('REACT_APP_FIREBASE_CREDENTIALS_PATH', '/app/wisepenny_fb.json')
+cred_path = os.getenv('GOOGLE_APPLICATION_CREDENTIALS', '/app/wisepenny_fb.json')
 cred = credentials.Certificate(cred_path)
 firebase_admin.initialize_app(cred)
 db = firestore.client()
