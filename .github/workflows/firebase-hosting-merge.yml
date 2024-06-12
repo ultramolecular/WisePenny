@@ -33,7 +33,7 @@ jobs:
       - name: Verify gcloud auth list
         run: gcloud auth list
 
-      - name: Debug: Verify Docker auth configuration
+      - name: Verify Docker auth configuration
         run: cat ~/.docker/config.json
 
       - name: Set up Docker Buildx
