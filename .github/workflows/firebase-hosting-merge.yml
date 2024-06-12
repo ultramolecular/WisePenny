@@ -25,7 +25,7 @@ jobs:
           project_id: wisepenny-b00ca
 
       - name: Activate service account
-        run: gcloud auth activate-service-account --key-file=$HOME/wisepenny_fb.json
+        run: gcloud auth activate-service-account --key-file=wisepenny_fb.json
         env:
           GOOGLE_APPLICATION_CREDENTIALS: wisepenny_fb.json
 
