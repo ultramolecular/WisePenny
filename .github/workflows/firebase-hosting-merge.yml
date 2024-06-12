@@ -13,12 +13,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Print environment variables
-        run: env
-
       - name: Create service account key
+        env:
+          WISEPENNY_FB_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_WISEPENNY_B00CA }}
         run: |
-          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_WISEPENNY_B00CA }}" | base64 --decode > wisepenny_fb.json
+          cat $WISEPENNY_FB_KEY
+          cat $WISEPENNY_FB_KEY > wisepenny_fb.json
 
       - id: 'auth'
         uses: 'google-github-actions/auth@v2'
