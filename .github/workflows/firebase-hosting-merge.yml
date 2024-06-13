@@ -26,11 +26,8 @@ jobs:
       - name: Authenticate Docker with Google Cloud
         run: gcloud auth configure-docker
 
-      - name: Verify gcloud auth list
-        run: gcloud auth list
-
-      - name: Verify Docker auth configuration
-        run: cat ~/.docker/config.json
+      - name: Create service account key file
+        run: echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_WISEPENNY_B00CA }}" > wisepenny_fb.json
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -43,14 +40,10 @@ jobs:
           push: true
           tags: gcr.io/wisepenny-b00ca/wisepenny-backend:latest
 
-      - name: Create service account key file
-        run: echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_WISEPENNY_B00CA }}" > wisepenny_fb.json
-
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy wisepenny-backend-service \
             --image gcr.io/wisepenny-b00ca/wisepenny-backend:latest \
             --platform managed \
             --region us-central1 \
-            --allow-unauthenticated \
-            --set-env-vars GOOGLE_APPLICATION_CREDENTIALS=wisepenny_fb.json
+            --allow-unauthenticated
