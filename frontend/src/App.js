@@ -29,7 +29,7 @@ function App() {
   }
 
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <div className="App">
         <Routes>
           <Route path="/login" element={authenticated ? <Navigate to="/dashboard" /> : <Login checkAuthStatus={checkAuthStatus}/>} />
