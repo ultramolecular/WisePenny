@@ -14,7 +14,7 @@ env_path = Path('.') / 'env'
 load_dotenv(dotenv_path = env_path)
 
 app = Flask(__name__, static_folder = '../frontend/build', static_url_path = '/')
-CORS(app, supports_credentials = True, resources={r"/*": {"origins": "*"}})
+CORS(app, supports_credentials=True, resources={r"/*": {"origins": "https://www.wisepenny.xyz"}})
 
 app.secret_key = os.getenv('REACT_APP_SECRET_KEY')
 
@@ -22,6 +22,7 @@ app.config['SESSION_TYPE'] = 'filesystem'
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days = 1)
 app.config['SESSION_COOKIE_SAMESITE'] = 'None'
 app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_DOMAIN'] = '.wisepenny.xyz'
 Session(app)
 
 # Firebase setup
