@@ -4,17 +4,26 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   changes:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: read
+      contents: read  # Ensure the permissions to read the repository are set
 
     outputs:
       backend: ${{ steps.filter.outputs.backend }}
       frontend: ${{ steps.filter.outputs.frontend }}
 
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
     - uses: dorny/paths-filter@v3
       id: filter
       with:
@@ -30,9 +39,6 @@ jobs:
     if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Create service account key JSON
         uses: jsdaniell/create-json@1.1.2
         with:
@@ -76,9 +82,6 @@ jobs:
     if: ${{ needs.changes.outputs.frontend == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
